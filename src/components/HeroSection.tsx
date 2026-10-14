@@ -1,6 +1,20 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight, Sparkles, Compass } from 'lucide-react';
+
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import {
+  ArrowRight,
+  Sparkles,
+  Compass,
+  BookOpen,
+  Dumbbell,
+  Heart,
+  Brain,
+} from 'lucide-react';
+import study from "../assets/images/study.jpg";
+import running from "../assets/images/running.jpg";
+import mastbations from "../assets/images/masterbation.jpg";
+import smoking from "../assets/images/smoking.jpg";
+import self from "../assets/images/self.jpg";
 import { playClickSound } from '../utils/audio.ts';
 
 interface HeroSectionProps {
@@ -9,97 +23,249 @@ interface HeroSectionProps {
   soundEnabled: boolean;
 }
 
+const slides = [
+  {
+    category: 'STUDY CHALLENGE',
+    eyebrow: 'FOCUS • LEARN • GROW',
+    title: 'Your Dreams Deserve Discipline.',
+    description:
+      'Improve your focus, study consistently, and turn small daily efforts into meaningful progress.',
+    image: study,
+    icon: BookOpen,
+    button: 'Start Studying',
+  },
+  {
+    category: 'RUNNING CHALLENGE',
+    eyebrow: 'MOVE • SWEAT • GROW',
+    title: 'One Step Closer to a Stronger You.',
+    description:
+      'Start running, improve your fitness, and build a healthier lifestyle one day at a time.',
+    image: running,
+    icon: Dumbbell,
+    button: 'Start Running',
+  },
+  {
+    category: 'QUIT SMOKING CHALLENGE',
+    eyebrow: 'HEALTH • PROGRESS • FREEDOM',
+    title: 'Take a Step Toward a Smoke-Free Life.',
+    description:
+      'Track your progress and celebrate each step toward quitting smoking.',
+    image: smoking,
+    icon: Heart,
+    button: 'Build Better Habits',
+  },
+  {
+    category: 'SELF-CONTROL CHALLENGE',
+    eyebrow: 'DISCIPLINE • CONTROL • GROWTH',
+    title: 'Change Your Habits. Change Your Life.',
+    description:
+      'Reduce unwanted habits, manage distractions, and build routines that support your goals.',
+    image: self,
+    icon: Brain,
+    button: 'Start My Challenge',
+  },
+  {
+    category: 'MASTURBATION CONTROL CHALLENGE',
+    eyebrow: 'SELF-AWARENESS • BALANCE • GROWTH',
+    title: 'Take Control. Focus on Your Goals.',
+    description:
+      'Build awareness of your habits and develop a balanced routine that supports your personal goals.',
+    image: mastbations,
+    icon: Brain,
+    button: 'Start My Challenge',
+  },
+];
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onStartChallenge,
   onExploreChallenges,
   soundEnabled,
 }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const slide = slides[activeIndex];
+  const CategoryIcon = slide.icon;
+
+  // Automatically change slide every 4 seconds
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % slides.length);
+    }, 4000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const handleStart = () => {
+    playClickSound(soundEnabled);
+    onStartChallenge();
+  };
+
+  const handleExplore = () => {
+    playClickSound(soundEnabled);
+    onExploreChallenges();
+  };
+
   return (
-    <section id="hero" className="relative px-3 pt-3 pb-6 sm:px-6 lg:px-8">
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl shadow-xl shadow-slate-900/10 dark:shadow-black/40">
-        {/* Background Image Container */}
-        <div className="relative min-h-[460px] sm:min-h-[520px] md:min-h-[580px] w-full flex items-center justify-center">
-          <img
-            src="/src/assets/images/hero_sunrise_mountains_1791954440703.jpg"
-            alt="Serene mountain sunrise landscape bathed in warm golden dawn light"
-            referrerPolicy="no-referrer"
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
+    <section
+      id="hero"
+      aria-label="Life Change Taker challenges"
+      className="px-3 py-3 sm:px-5 lg:px-8"
+    >
+      <div className="mx-auto max-w-7xl">
+        <div className="relative isolate h-[490px] overflow-hidden rounded-2xl bg-slate-950 shadow-xl sm:h-[450px] sm:rounded-3xl lg:h-[440px]">
 
-          {/* Measured Contrast Overlay Scrim */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/50 to-slate-950/40" />
-
-          {/* Decorative Warm Ambient Glow */}
-          <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-amber-500/20 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-orange-500/20 blur-3xl pointer-events-none" />
-
-          {/* Hero Content */}
-          <div className="relative z-10 mx-auto max-w-3xl px-4 py-12 sm:px-6 text-center text-white">
-            {/* Eyebrow */}
+          {/* Local background image slider */}
+          <AnimatePresence initial={false}>
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold tracking-wider text-amber-200 backdrop-blur-md border border-white/20 mb-4"
+              key={slide.image}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7 }}
+              className="absolute inset-0 -z-20"
             >
-              <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-              <span>SMALL STEPS • DAILY CONSISTENCY • PROVEN RESULTS</span>
+              <img
+                src={slide.image}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-cover object-center"
+              />
             </motion.div>
+          </AnimatePresence>
 
-            {/* Requested Main Heading */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-              className="text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-balance drop-shadow-sm text-white"
-            >
-              Small Daily Actions. A Better Life.
-            </motion.h1>
+          {/* Dark overlay for readability */}
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/25" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-slate-950/55 to-transparent" />
 
-            {/* Requested Supporting Text */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-              className="mx-auto mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed text-balance"
-            >
-              Start a personal challenge, build consistency, track your progress, and celebrate every milestone.
-            </motion.p>
+          {/* Hero content */}
+          <div className="flex h-full items-center px-5 py-7 sm:px-9 md:px-12 lg:px-14">
+            <div className="w-full max-w-3xl text-white">
 
-            {/* CTA Buttons */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={slide.category}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  {/* Category badge */}
+                  <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2 backdrop-blur-md">
+                    <CategoryIcon
+                      size={17}
+                      className="shrink-0 text-amber-400"
+                    />
+
+                    <span className="text-[10px] font-bold tracking-wider text-amber-200 sm:text-xs">
+                      {slide.eyebrow}
+                    </span>
+
+                    <Sparkles
+                      size={14}
+                      className="shrink-0 text-amber-300"
+                    />
+                  </div>
+
+                  {/* Main heading */}
+                  <h1 className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-[52px]">
+                    {slide.title}
+                  </h1>
+
+                  {/* Supporting text */}
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-slate-200 sm:mt-4 sm:text-base sm:leading-7">
+                    {slide.description}
+                  </p>
+
+                  {/* How the challenge works */}
+                  <div className="mt-4 flex flex-wrap gap-2 text-xs font-medium text-white">
+                    {[
+                      'Choose a goal',
+                      'Build a streak',
+                      'Track progress',
+                    ].map((item, index) => (
+                      <span
+                        key={item}
+                        className="rounded-lg border border-white/15 bg-white/10 px-2.5 py-2 backdrop-blur-sm sm:px-3"
+                      >
+                        <span className="mr-1 text-[#29fa61df]">
+                          0{index + 1}
+                        </span>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Call-to-action buttons */}
+                  <div className="mt-5 flex flex-col gap-3 min-[420px]:flex-row sm:mt-6">
+                    <button
+                      type="button"
+                      onClick={handleStart}
+                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-green-400 px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-green-300 active:scale-[0.98]"
+                    >
+                      {slide.button}
+                      <ArrowRight size={17} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleExplore}
+                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/20 active:scale-[0.98]"
+                    >
+                      <Compass
+                        size={17}
+                        className="text-green-400"
+                      />
+                      Explore Challenges
+                    </button>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Five-slide navigation */}
+              <div className="mt-5 flex items-center gap-2">
+                {slides.map((item, index) => (
+                  <button
+                    key={item.category}
+                    type="button"
+                    onClick={() => setActiveIndex(index)}
+                    aria-label={`Show ${item.category}`}
+                    aria-pressed={activeIndex === index}
+                    className="flex h-6 items-center"
+                  >
+                    <span
+                      className={`h-1.5 rounded-full transition-all duration-300 ${activeIndex === index
+                        ? 'w-8 bg-green-500'
+                        : 'w-4 bg-white/50 hover:bg-white'
+                        }`}
+                    />
+                  </button>
+                ))}
+
+                <span className="ml-2 text-[11px] font-semibold text-white/80">
+                  {String(activeIndex + 1).padStart(2, '0')} /{' '}
+                  {String(slides.length).padStart(2, '0')}
+                </span>
+
+                <span className="ml-auto hidden text-xs text-white/70 sm:block">
+                  Small steps. Real progress.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Four-second progress bar */}
+          <div className="absolute bottom-0 left-0 h-1 w-full bg-white/15">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
-              className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  playClickSound(soundEnabled);
-                  onStartChallenge();
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-500 px-6 py-3.5 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 active:scale-98 cursor-pointer"
-              >
-                <span>Start Your Challenge</span>
-                <ArrowRight className="h-4 w-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  playClickSound(soundEnabled);
-                  onExploreChallenges();
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-white/15 px-6 py-3.5 text-sm font-medium text-white backdrop-blur-md border border-white/25 transition-all hover:bg-white/25 active:scale-98 cursor-pointer"
-              >
-                <Compass className="h-4 w-4 text-amber-200" />
-                <span>Explore Challenges</span>
-              </button>
-            </motion.div>
+              key={activeIndex}
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 4, ease: 'linear' }}
+              className="h-full bg-amber-400"
+            />
           </div>
         </div>
       </div>
     </section>
   );
 };
+
+export default HeroSection;

@@ -11,10 +11,6 @@ import { ChallengeSetupModal } from './components/ChallengeSetupModal.tsx';
 import { ActiveChallengeDashboard } from './components/ActiveChallengeDashboard.tsx';
 import { CompletionToast } from './components/CompletionToast.tsx';
 import { CelebrationModal } from './components/CelebrationModal.tsx';
-import { HowItWorks } from './components/HowItWorks.tsx';
-import { GuidesSection } from './components/GuidesSection.tsx';
-import { BenefitsSection } from './components/BenefitsSection.tsx';
-import { FAQSection } from './components/FAQSection.tsx';
 import { Footer } from './components/Footer.tsx';
 import { ActiveChallenge, ChallengeDuration, CompletedChallengeRecord } from './types.ts';
 import {
@@ -325,20 +321,7 @@ export default function App() {
             soundEnabled={soundEnabled}
           />
 
-          {/* How It Works Section */}
-          <HowItWorks />
-
-          {/* Original Learning & Habit Guides Section */}
-          <GuidesSection
-            onStartWithDuration={(duration) => handleOpenSetup(duration)}
-            soundEnabled={soundEnabled}
-          />
-
-          {/* Motivational Benefits Section */}
-          <BenefitsSection />
-
-          {/* Frequently Asked Questions */}
-          <FAQSection soundEnabled={soundEnabled} />
+       
         </main>
       </div>
 

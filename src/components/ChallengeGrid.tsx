@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { CHALLENGE_DURATIONS } from '../data/durations.ts';
 import { ChallengeCard } from './ChallengeCard.tsx';
@@ -15,22 +16,30 @@ export const ChallengeGrid: React.FC<ChallengeGridProps> = ({
   soundEnabled,
 }) => {
   return (
-    <section id="challenges" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-        <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-          CHALLENGE DURATIONS
-        </span>
-        <h2 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-          Choose Your Horizon
+    <section
+      id="challenges"
+      className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8"
+    >
+      {/* Section heading */}
+      <div className="mx-auto mb-8 max-w-2xl text-center sm:mb-11">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-green-400 bg-green-50 px-3 py-1.5 text-[10px] font-extrabold tracking-[0.18em] text-black dark:bg-amber-950/40 dark:text-amber-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+          YOUR JOURNEY STARTS HERE
+        </div>
+
+        <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl md:text-4xl">
+          Choose Your{' '}
+          <span className="text-green-500">Challenge</span>
         </h2>
-        <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400">
-          Pick a timeframe that challenges you while fitting your daily rhythm. From a 7-day quick reset to a transformative 300-day journey.
+
+        <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-500 dark:text-slate-400 sm:text-base">
+          Small daily actions. Better habits. A stronger you.
+          Pick your duration and start today.
         </p>
       </div>
 
-      {/* Responsive Grid: 2 cols on mobile (300 days spans both), 3 on tablet, 3-4 on desktop */}
-      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5">
+      {/* 2 columns on mobile, 3 on tablet, 4 on desktop */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
         {CHALLENGE_DURATIONS.map((meta) => (
           <ChallengeCard
             key={meta.duration}
@@ -41,6 +50,11 @@ export const ChallengeGrid: React.FC<ChallengeGridProps> = ({
           />
         ))}
       </div>
+
+      {/* Footer hint */}
+      <p className="mt-7 text-center text-[11px] font-medium text-slate-400 dark:text-slate-500">
+        One day at a time. One step closer to your best self.
+      </p>
     </section>
   );
 };
